@@ -28,9 +28,14 @@ TeX Live installation.
 | `flashjet-ml4jets.tex` | slide source (beamer, 16:9) |
 | `flashjet-ml4jets.pdf` | built deck |
 | `make_illustrations.py` | regenerates the two schematic figures |
+| `make_tree_gallery.py` | regenerates the real-jet C/A tree gallery |
 | `fig/` | figures |
 
-The talk walks through how sequential recombination works, what the exponent $p$
+`make_tree_gallery.py` reads the ATLAS Top Tagging HDF5 file locally (see the
+dataset links below) — edit `SRC` at the top to point at your copy.
+
+The talk opens with what jet clustering is and why it runs everywhere, then walks
+through how sequential recombination works, what the exponent $p$
 selects (anti-$k_t$ / C--A / $k_t$), and then each substructure feature in turn:
 exclusive subjets from the $k_t$ history, soft-drop grooming and Lund
 coordinates from the C--A history.
