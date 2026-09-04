@@ -52,9 +52,9 @@ physics data.
   found, versus FastJet.
 - **Closure against the experiment:** reproduces ATLAS's own `RecoJets_R4`
   exactly — 100 % jet-count match at ~600 clusters/event.
-- **Speed:** **39–99×** over vectorised FastJet on a Tesla V100S, with the
-  advantage growing with jet multiplicity. Cost is independent of the jet radius
-  and of the algorithm choice.
+- **Speed:** **39–99×** over vectorised FastJet on an NVIDIA V100-class GPU,
+  with the advantage growing with jet multiplicity. Cost is independent of the
+  jet radius and of the algorithm choice.
 
 The CPU baseline throughout is FastJet's **Python** binding; a C++ FastJet
 comparison is the main outstanding measurement.
