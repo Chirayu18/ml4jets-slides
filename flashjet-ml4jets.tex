@@ -184,67 +184,76 @@ there selects which algorithm this loop runs.}
 
 \begin{frame}{\akt{} gives rigid, circular jets \hfill \toyB}
 \begin{center}
-\includegraphics[width=\linewidth]{fig/jet_areas.png}
+\includegraphics[width=0.86\linewidth]{fig/jet_areas.png}
 \end{center}
-\vspace{-0.4em}
+\vspace{-0.6em}
 \textbf{Only the exponent $p$ changes:}
 \begin{center}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}c l l l l@{}}
+\renewcommand{\arraystretch}{1.05}
+\footnotesize
+\begin{tabular}{@{}c l l l l l@{}}
 \toprule
-$p$ & algorithm & merges first & tree ordered by & used for\\
+$p$ & algorithm & merges first & tree ordered by & used for & \textbf{panel above}\\
 \midrule
-$-1$ & \akt & the \textbf{hardest} pairs & --- & \textbf{finding jets}\\
+$-1$ & \akt & the \textbf{hardest} pairs & --- & \textbf{finding jets} &
+      \textbf{right} --- circular, rigid\\
 $0$ & Cambridge--Aachen & the \textbf{closest} pair & \textbf{angle} &
-      grooming, Lund plane\\
+      grooming, Lund plane & \textbf{middle} --- ragged edges\\
 $+1$ & $k_t$ & the \textbf{softest} pair & \textbf{relative $p_T$} &
-      exclusive subjets\\
+      exclusive subjets & \textbf{left} --- most irregular\\
 \bottomrule
 \end{tabular}
 \end{center}
-%TODO decrease font size in table slightly to make table fit and add another column explaining the 3 plots above
+\vspace{-0.3em}
+\smallnote{Only \akt{} gives jets whose area is insensitive to the soft
+background --- which is why it is the one used to \emph{find} jets. The other
+two are used on a jet that has \emph{already} been found.}
 \end{frame}
 
-\begin{frame}{It returns the tree, not just the jets}
-Clustering a batch returns \textbf{two} things --- the jets, and the record of how
-they were built.
-\medskip
+\begin{frame}{It returns the tree, not just the jets \hfill \realC}
+\vspace{-0.2em}
+{\footnotesize Clustering a batch returns \textbf{two} things --- the jets
+(\texttt{jet\_idx} $(B,N)$, \texttt{n\_jets} $(B,)$), and the
+\textcolor{fjred}{\textbf{merge history}} below: \texttt{hist\_p1},
+\texttt{hist\_p2} (which pair merged), \texttt{hist\_child} (what they merged
+into) and \texttt{hist\_d} (the distance), each $(B,N)$.}
+\vspace{-0.1em}
 
 \begin{center}
-\small
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{field} & \textbf{shape} & \textbf{what it holds}\\
-\midrule
-\texttt{jet\_idx} & $(B,N)$ & which jet each particle ended up in\\
-\texttt{n\_jets} & $(B,)$ & how many jets were found\\
-\addlinespace
-\texttt{hist\_p1}, \texttt{hist\_p2} & $(B,N)$ & \textbf{which pair merged}, at each step\\
-\texttt{hist\_child} & $(B,N)$ & what they merged \emph{into}\\
-\texttt{hist\_d} & $(B,N)$ & the distance $d_{ij}$ at that step\\
-\bottomrule
-\end{tabular}
+\includegraphics[width=\linewidth]{fig/hist_to_tree.png}
 \end{center}
-%TODO show a bracket around the bottom 3 rows and arrow that to a actual binary tree output by flashjet
-\begin{center}
-\end{center}
+\vspace{-0.5em}
+\smallnote{One real ATLAS jet with 8 constituents, C/A. Read column~0: particles
+\texttt{0} and \texttt{5} merge into \texttt{8} --- the node at the bottom right.
+Seven columns, seven merges, and the tree is complete. \textbf{Everything
+downstream --- grooming, subjets, Lund coordinates --- is a read of these rows},
+never a second clustering.}
 \end{frame}
 
-\begin{frame}{What is implemented}
-%TODO make this more like a transition slide keep content same
+{% transition slide: what exists, before the three feature slides that follow
+\setbeamertemplate{headline}{}
+\begin{frame}[plain,noframenumbering]
+\vfill
+\begin{center}
+{\usebeamercolor[fg]{structure}\Large\bfseries What is implemented}
+\vskip3pt
+{\color{fjred}\rule{0.30\textwidth}{1.2pt}}
+\end{center}
+\vskip1.2em
+
 \begin{columns}[T]
-\begin{column}{0.5\textwidth}
+\begin{column}{0.46\textwidth}
 \textbf{Clustering}
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.15em}
   \item generalised-$k_t$: \akt, $k_t$, C/A
   \item merge history recorded in-kernel
   \item many jets clustered in one batched call
   \item scales from single jets to whole events
 \end{itemize}
 \end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.46\textwidth}
 \textbf{Substructure} --- reads of the history
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.15em}
   \item \textbf{F1} exclusive $k_t$ subjets
   \item \textbf{F2} soft drop / mMDT / mass-drop
   \item \textbf{F3} primary Lund coordinates
@@ -254,7 +263,8 @@ they were built.
 identical, negligible cost.}
 \end{column}
 \end{columns}
-\end{frame}
+\vfill
+\end{frame}}
 
 % ------------------------------------------------------------
 \begin{frame}{F1 --- exclusive subjets from the $k_t$ history \hfill \toyA}
@@ -305,12 +315,11 @@ constituents again, so grooming is essentially free once clustered.}
 
 % ------------------------------------------------------------
 \begin{frame}{What the tree looks like on real jets \hfill \realC}
+\vspace{-0.8em}
 \begin{center}
-\vspace{-0.5em}
-\hspace{-0.5em}
-\includegraphics[width=\linewidth]{fig/tree_gallery.png}
+\makebox[\textwidth][c]{%
+  \includegraphics[width=1.06\paperwidth]{fig/tree_gallery.png}}
 \end{center}
-%TODO make this plot bigger somehow if possible
 \end{frame}
 
 \begin{frame}{F3 --- primary Lund coordinates \hfill \toyA}
