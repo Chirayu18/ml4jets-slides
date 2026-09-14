@@ -75,7 +75,7 @@
   \end{frame}}
 
 \title[flashjet]{\textbf{flashjet}}
-\subtitle{GPU-native jet clustering with the full merge history\\[0.3em]{\normalsize\normalfont designed for reclustering inside training loops, on padded tensors that stay on the GPU}}
+\subtitle{GPU-native jet clustering with the full merge history\\[0.3em]}
 \author[C. Gupta]{%
   \textbf{Chirayu Gupta}\inst{1}\textsuperscript{,}* \and
   Sitian Qian\inst{2} \and
@@ -90,7 +90,6 @@
 \begin{frame}[plain,noframenumbering]
   \titlepage
   \begin{center}
-  \smallnote{* speaker}
   \end{center}
 \end{frame}
 
@@ -107,17 +106,14 @@
 \begin{itemize}\setlength\itemsep{0.1em}
   \item GPUs in the CMS High Level Trigger since Run~3
   \item $\sim$\textbf{30\,\%} of HLT reco offloaded $\rightarrow$
-        $\sim$\textbf{25\,\%} less HLT time
-  \item pixel local reco $\cdot$ tracks $\cdot$ vertices $\cdot$ calo local reco
+        $\sim$\textbf{40\,\%} less HLT time
 \end{itemize}
 \vspace{0.4em}
+%TODO add image.png and cite https://www.epj-conferences.org/articles/epjconf/pdf/2024/05/epjconf_chep2024_11020.pdf
 
-\textbf{2.\ What is missing}
-\begin{center}
 \begin{block}{}
 \centering\large Jet clustering is \textcolor{fjred}{\textbf{still on the CPU}}.
 \end{block}
-\end{center}
 \vspace{0.2em}
 
 \begin{columns}[T]
@@ -131,14 +127,13 @@
 \end{column}
 \begin{column}{0.5\textwidth}
 \textbf{4.\ Why that costs us now}
+Inside a training loop, we pay for transferring data from host to device and back for: 
 \begin{itemize}\setlength\itemsep{0.1em}
-  \item \textbf{reclustering inside a training loop}
+  \item \textbf{reclustering}
   \item scanning the \textbf{jet radius} $R$
   \item \textbf{substructure} on demand
 \end{itemize}
-\smallnote{The tensors are already on the GPU --- each of these sends them back
-to the host and returns, once per call.}
-\end{column}
+end{column}
 \end{columns}
 \end{frame}
 
