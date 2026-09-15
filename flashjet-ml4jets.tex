@@ -378,8 +378,8 @@ samples, 20\,000 jets each.
 
 \textbf{100.000\,\%} jet-count agreement at \textbf{every} point.
 \end{block}
-\smallnote{Leading-jet $p_T$ within $10^{-4}$ at 148/150; median difference
-$\sim7\times10^{-8}$ --- float32 precision.}
+{\small Leading-jet $p_T$ within $10^{-4}$ at \textbf{148/150}; median
+difference $\sim7\times10^{-8}$ --- float32 precision.}
 \end{column}
 \begin{column}{0.45\textwidth}
 \begin{block}{vs ATLAS's own reconstructed jets}
@@ -446,7 +446,7 @@ The regimes are timed separately because a jet and an event are different units.
 \end{enumerate}
 \smallskip
 
-\smallnote{Speedups are quoted against the \textbf{vectorised} FastJet
+{\small Speedups are quoted against the \textbf{vectorised} FastJet
 interface --- the faster, fairer baseline.}
 \end{column}
 \end{columns}
@@ -559,10 +559,10 @@ both null-or-worse (backup). }
 \centering
 \includegraphics[width=0.5\linewidth]{fig/part_loss_full.png}\\
 \vspace{-0.2em}
-\smallnote{Validation loss over the full $10^{6}$ iterations. The
-curves are \textbf{on top of each other} --- the feature block does not
-destabilise training, and it does not accelerate it either. Both converge to
-\textbf{$\sim$86.2\,\%}.}
+{\small The curves are \textbf{on top of each other}: the feature block
+neither destabilises training nor accelerates it. Both converge to
+\textbf{$\sim$86.2\,\%}.}\\[0.2em]
+\smallnote{Validation loss over the full $10^{6}$ iterations.}
 \end{frame}
 
 \begin{frame}{Top tagging: the gain closes with training \hfill}
