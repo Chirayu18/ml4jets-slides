@@ -614,15 +614,15 @@ convergence.}
 \end{frame}
 
 \begin{frame}{All seven signal classes --- the same story}
-%TODO: Clip the tbqq panel and center the plot making it bigger and all. and center the right column also
-\begin{columns}[T]
-\begin{column}{0.68\textwidth}
-\includegraphics[width=\linewidth]{fig/part_ratio_allclasses.png}\\[-0.4em]
-\end{column}
-\begin{column}{0.32\textwidth}
-\textbf{Test accuracy} \smallnote{$\sim$20.05\,M jets}
-
+\begin{center}
+\includegraphics[width=0.94\linewidth]{fig/part_ratio_allclasses.png}
+\end{center}
+\vspace{-0.9em}
+\begin{columns}[c]
+\begin{column}{0.46\textwidth}
+\centering
 \scriptsize
+\textbf{Test accuracy} \smallnote{($\sim$20.05\,M jets)}\\[0.2em]
 \begin{tabular}{@{}lccc@{}}
 \toprule
  & 40k & 100k & 1M\\
@@ -632,11 +632,10 @@ PLuM & 83.428 & 84.697 & 86.206\\
 $\Delta$ & $-0.003$ & $+0.065$ & $-0.006$\\
 \bottomrule
 \end{tabular}
-\smallskip
-\begin{block}{What we see}
-\scriptsize An \textbf{early gain in every class}, \textbf{gone by 1\,M}.  At convergence:
-\textbf{null-or-worse}.
-\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+{\small An \textbf{early gain in every class}, \textbf{gone by 1\,M}. At
+convergence: \textbf{null-or-worse}.}
 \end{column}
 \end{columns}
 \end{frame}
