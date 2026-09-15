@@ -27,6 +27,7 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{fancyvrb}
+\usepackage{hyperref}
 
 \definecolor{fjred}{HTML}{B00020}
 \definecolor{fjgray}{HTML}{555555}
@@ -103,23 +104,6 @@
 % ============================================================
 \section{Jet clustering, and flashjet}
 
-\begin{frame}{Reconstruction is moving to accelerators --- clustering has not}
-\begin{center}
-\includegraphics[height=0.60\textheight]{fig/cms_hlt_gpu_timing.png}
-\end{center}
-\vspace{-0.5em}
-\smallnote{CMS HLT per-event time, CPU-only (left) vs with GPU offload
-(right) --- $\sim$\textbf{30\,\%} of the reco offloaded buys
-$\sim$\textbf{40\,\%} less HLT time. \textbf{\textcolor{fjred}{Jets/MET} barely
-moves}: it is still on the CPU. [CMS, EPJ Web Conf.\ \textbf{295} (2024) 11020]}
-\vspace{0.3em}
-
-\textbf{Why clustering stayed on the CPU}
-\begin{itemize}
-  \item sequential recombination is \textbf{IRC safe} --- that is why it won
-  \item but each merge \textbf{depends on the previous one} --- serial dependence is what a GPU does worst
-\end{itemize}
-\end{frame}
 
 \begin{frame}{flashjet --- a GPU jet clusterer}
 \textbf{What it does}
@@ -333,20 +317,6 @@ QCD fills the soft-collinear region smoothly; the W-like sample adds a
 % ============================================================
 \section{Correctness}
 
-\begin{frame}{Closures against analytic predictions \hfill \toyB}
-\begin{columns}[T]
-\begin{column}{0.5\textwidth}
-\includegraphics[width=0.93\linewidth]{fig/zg_distribution.png}\\
-Soft-drop $z_g$ follows the $1/z$ form predicted at leading-log,
-recovered from the C/A history.
-\end{column}
-\begin{column}{0.5\textwidth}
-\includegraphics[width=0.93\linewidth]{fig/softdrop_rho.png}\\
-Groomed-mass ordering in $\beta$: larger $\beta$ grooms less, so the
-mass peak moves up.
-\end{column}
-\end{columns}
-\end{frame}
 
 \begin{frame}{Jet by jet, against ATLAS's own stored values \hfill \realC}
 \begin{center}
@@ -587,6 +557,9 @@ rejection ratio.
 
 \smallnote{Bands: unpaired bootstrap of the test set, 16--84th percentile. The
 low-efficiency end is noisy because rejection there is $\sim10^{5}$.}
+
+\smallskip
+\textbf{Top right = BETTER }
 \end{column}
 \end{columns}
 \end{frame}
@@ -608,7 +581,9 @@ ratio is \textbf{at or below 1}.
 
 \smallnote{Their result is obtained in \emph{binary} mode ; ours is a 10-class training. The
 early-training agreement is real --- the disagreement is about what survives to
-convergence.}
+convergence.}\\
+\smallskip
+\textbf{Top right = BETTER }
 \end{column}
 \end{columns}
 \end{frame}
@@ -658,8 +633,11 @@ convergence: \textbf{null-or-worse}.}
   \medskip
   \item \textbf{54--143$\times$ faster} than vectorised FastJet
   \medskip
+  \item  The tree as tagger input gave no lasting gain.
+  \medskip
   \item Still a \textcolor{fjorange}{\textbf{prototype}}, with meaningful headroom
   left.
+  
   %Add a small bullet here saying the result of training (small 1 line statement with no numbers)
 \end{enumerate}
 \end{frame}
@@ -673,8 +651,6 @@ convergence: \textbf{null-or-worse}.}
 {\large Questions?}
 \vspace{2em}
 
-\smallnote{Benchmarks: ATLAS Open Data (CC0).\\
-Physics closures: analytic predictions on toy showers.}
 \end{center}
 \vfill
 \end{frame}
@@ -1149,6 +1125,39 @@ ATLAS Top Tagging Open Data & timing + FastJet agreement\\
 \smallnote{Constituents are calorimeter clusters, massless. Physics closures use
 toy showers compared against leading-log analytic predictions, so the prediction
 being tested is unambiguous.}
+\end{frame}
+
+\begin{frame}{Reconstruction is moving to accelerators --- clustering has not}
+\begin{center}
+\includegraphics[height=0.60\textheight]{fig/cms_hlt_gpu_timing.png}
+\end{center}
+\vspace{-0.5em}
+\smallnote{CMS HLT per-event time, CPU-only (left) vs with GPU offload
+(right) --- $\sim$\textbf{30\,\%} of the reco offloaded buys
+$\sim$\textbf{40\,\%} less HLT time. \textbf{\textcolor{fjred}{Jets/MET} barely
+moves}: it is still on the CPU. [CMS, EPJ Web Conf.\ \textbf{295} (2024) 11020]}
+\vspace{0.3em}
+
+\textbf{Why clustering stayed on the CPU}
+\begin{itemize}
+  \item sequential recombination is \textbf{IRC safe} --- that is why it won
+  \item but each merge \textbf{depends on the previous one} --- serial dependence is what a GPU does worst
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Closures against analytic predictions \hfill \toyB}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\includegraphics[width=0.93\linewidth]{fig/zg_distribution.png}\\
+Soft-drop $z_g$ follows the $1/z$ form predicted at leading-log,
+recovered from the C/A history.
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=0.93\linewidth]{fig/softdrop_rho.png}\\
+Groomed-mass ordering in $\beta$: larger $\beta$ grooms less, so the
+mass peak moves up.
+\end{column}
+\end{columns}
 \end{frame}
 
 \end{document}
