@@ -178,8 +178,6 @@ GPU it finds — no separate CUDA build.
 \end{enumerate}
 \end{column}
 \end{columns}
-\smallnote{Both distances were defined on the previous slide; the exponent $p$
-there selects which algorithm this loop runs.}
 \end{frame}
 
 \begin{frame}{\akt{} gives rigid, circular jets \hfill \toyB}
@@ -205,9 +203,6 @@ $+1$ & $k_t$ & the \textbf{softest} pair & \textbf{relative $p_T$} &
 \end{tabular}
 \end{center}
 \vspace{-0.3em}
-\smallnote{Only \akt{} gives jets whose area is insensitive to the soft
-background --- which is why it is the one used to \emph{find} jets. The other
-two are used on a jet that has \emph{already} been found.}
 \end{frame}
 
 \begin{frame}{It returns the tree, not just the jets \hfill \realC}
@@ -318,7 +313,7 @@ constituents again, so grooming is essentially free once clustered.}
 \vspace{-0.8em}
 \begin{center}
 \makebox[\textwidth][c]{%
-  \includegraphics[width=1.06\paperwidth]{fig/tree_gallery.png}}
+  \includegraphics[width=1.03\paperwidth]{fig/tree_gallery.png}}
 \end{center}
 \end{frame}
 
@@ -327,24 +322,12 @@ constituents again, so grooming is essentially free once clustered.}
 \includegraphics[width=0.80\linewidth]{fig/lund_plane.png}
 \end{center}
 \vspace{-0.6em}
-\begin{columns}[T]
-\begin{column}{0.34\textwidth}
-\smallnote{\textbf{What.} Every primary splitting emits
+Every primary splitting emits
 $z=\tfrac{p_{T2}}{p_{T1}+p_{T2}}$, $\Delta R$, $k_t=p_{T2}\Delta R$, and the
-plane coordinates $\big(\ln\tfrac{1}{\Delta R},\ \ln k_t\big)$.}
-\end{column}
-\begin{column}{0.32\textwidth}
-\smallnote{\textbf{How.} One pass down the primary branch --- each node is one
-point in the plane.}
-\end{column}
-\begin{column}{0.34\textwidth}
-\smallnote{\textbf{Check.} The $d$-channel ties \emph{exactly} to the splitting
-scales computed independently.}
-\end{column}
-\end{columns}
-\smallnote{QCD fills the soft-collinear region smoothly; the W-like sample adds a
+plane coordinates $\big(\ln\tfrac{1}{\Delta R},\ \ln k_t\big)$.
+QCD fills the soft-collinear region smoothly; the W-like sample adds a
 \textbf{localised hard splitting} exactly where the decay is predicted to sit
-(star).}
+(star).
 \end{frame}
 
 % ============================================================
@@ -354,19 +337,15 @@ scales computed independently.}
 \begin{columns}[T]
 \begin{column}{0.5\textwidth}
 \includegraphics[width=0.93\linewidth]{fig/zg_distribution.png}\\
-\smallnote{Soft-drop $z_g$ follows the $1/z$ form predicted at leading-log,
-recovered from the C/A history.}
+Soft-drop $z_g$ follows the $1/z$ form predicted at leading-log,
+recovered from the C/A history.
 \end{column}
 \begin{column}{0.5\textwidth}
 \includegraphics[width=0.93\linewidth]{fig/softdrop_rho.png}\\
-\smallnote{Groomed-mass ordering in $\beta$: larger $\beta$ grooms less, so the
-mass peak moves up.}
+Groomed-mass ordering in $\beta$: larger $\beta$ grooms less, so the
+mass peak moves up.
 \end{column}
 \end{columns}
-\smallskip
-\smallnote{\textbf{Toys first:} on generated input the answer is known
-analytically, so anything off the curve is a real bug. Real-data checks follow.
-Toy-shower input tests the decoders, not an event generator.}
 \end{frame}
 
 \begin{frame}{Jet by jet, against ATLAS's own stored values \hfill \realC}
@@ -391,7 +370,7 @@ value \textbf{ATLAS computed with FastJet} and stored: median \textbf{1.0000},
 
 \begin{frame}{It gives the same jets --- everywhere we looked \hfill \realC}
 \begin{columns}[T]
-\begin{column}{0.52\textwidth}
+\begin{column}{0.45\textwidth}
 \begin{block}{vs FastJet --- a 150-point grid}
 \small 3 algorithms $\times$ 5 radii $\times$ 5 multiplicity bins $\times$ 2
 samples, 20\,000 jets each.
@@ -402,7 +381,7 @@ samples, 20\,000 jets each.
 \smallnote{Leading-jet $p_T$ within $10^{-4}$ at 148/150; median difference
 $\sim7\times10^{-8}$ --- float32 precision.}
 \end{column}
-\begin{column}{0.48\textwidth}
+\begin{column}{0.45\textwidth}
 \begin{block}{vs ATLAS's own reconstructed jets}
 \small Cluster the $\sim$600 stored calorimeter clusters ourselves; compare to
 the jets ATLAS reconstructed and published.
@@ -415,12 +394,6 @@ the jets ATLAS reconstructed and published.
 \end{columns}
 \vspace{0.3em}
 
-\begin{block}{}
-\small Two \emph{independent} references: FastJet for the jets, a separate
-\textbf{NumPy tree-walk} for every substructure decoder. The second test closes
-the algorithm against \textbf{the experiment's published output} --- not against
-another implementation of the same algorithm.
-\end{block}
 \smallnote{Per-point tables and the $R$/multiplicity scans are in backup.}
 \end{frame}
 
@@ -462,8 +435,6 @@ The regimes are timed separately because a jet and an event are different units.
 \end{tabular}}
 \smallskip
 
-\smallnote{Grids: \textbf{3 algorithms $\times$ 5 radii $\times$ 5 multiplicity
-bins} in each regime --- 150 jet points, 75 event points.}
 \medskip
 
 \textbf{Method} \smallnote{(identical in both)}
@@ -497,11 +468,8 @@ speedup peaks \textbf{129$\times$} / \textbf{65$\times$}.}
 \includegraphics[width=\linewidth,trim=0 8 0 8,clip]{fig/atlas_speedup_algs.png}
 \end{center}
 \smallnote{All three algorithms, both samples, $R=1.0$. \textbf{54--143$\times$}
-over vectorised FastJet across the 150-point grid (median \textbf{89$\times$}),
-every point at \textbf{100\,\%} $n_{\rm jets}$ agreement. The speedup \textbf{peaks
-near $N\approx45$}: below it the GPU is under-filled, above it the $O(N^2)$ work
-per jet grows faster than FastJet's. The peak sits squarely in the
-\textbf{boosted-object range}.}
+over vectorised FastJet (median \textbf{89$\times$}),
+every point at \textbf{100\,\%} $n_{\rm jets}$ agreement. }
 \end{frame}
 
 \begin{frame}[fragile]{Using it}
@@ -561,7 +529,7 @@ to convergence. All arms read \textbf{identical shards} in the same order;
 features are computed \textbf{live} by flashjet inside the loop.
 \end{column}
 \begin{column}{0.46\textwidth}
-\begin{block}{Our baseline reproduces the paper}
+\begin{block}{Our baseline reproduces the ParT paper}
 \small
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -582,23 +550,16 @@ not a broken baseline.
 $[\ln k_t, \ln 1/\Delta R, \ln z]$, concatenated as extra tokens (176 vs 128).
 Two other encodings were tried --- \textbf{subjet} ($n$-body mass, $p_T$
 fraction, $n_{\rm const}$) and \textbf{CA5} (per-particle C/A branch points);
-both null-or-worse (backup). Bootstrap errors, 16--84th pct.
-\textbf{One seed per arm.}}
+both null-or-worse (backup). }
 \end{column}
 \end{columns}
 \end{frame}
 
 \begin{frame}{Both arms train identically}
-\begin{columns}[T]
-\begin{column}{0.5\textwidth}
-\includegraphics[width=\linewidth]{fig/part_loss_full.png}
-\end{column}
-\begin{column}{0.5\textwidth}
-\includegraphics[width=\linewidth]{fig/part_acc_full.png}
-\end{column}
-\end{columns}
+\centering
+\includegraphics[width=0.5\linewidth]{fig/part_loss_full.png}\\
 \vspace{-0.2em}
-\smallnote{Validation loss and accuracy over the full $10^{6}$ iterations. The
+\smallnote{Validation loss over the full $10^{6}$ iterations. The
 curves are \textbf{on top of each other} --- the feature block does not
 destabilise training, and it does not accelerate it either. Both converge to
 \textbf{$\sim$86.2\,\%}.}
@@ -644,8 +605,7 @@ ratio is \textbf{at or below 1}.
 \end{block}
 \medskip
 
-\smallnote{Their result is obtained in \emph{binary} mode on a fast simulation
-\textbf{without secondary-vertex inputs}; ours is a 10-class training. The
+\smallnote{Their result is obtained in \emph{binary} mode ; ours is a 10-class training. The
 early-training agreement is real --- the disagreement is about what survives to
 convergence.}
 \end{column}
@@ -653,10 +613,10 @@ convergence.}
 \end{frame}
 
 \begin{frame}{All seven signal classes --- the same story}
+%TODO: Clip the tbqq panel and center the plot making it bigger and all. and center the right column also
 \begin{columns}[T]
 \begin{column}{0.68\textwidth}
-\includegraphics[width=\linewidth,trim=0 55 0 18,clip]{fig/part_ratio_allclasses.png}\\[-0.4em]
-\smallnote{PLuM/baseline rejection ratio; unpaired-bootstrap bands.}
+\includegraphics[width=\linewidth]{fig/part_ratio_allclasses.png}\\[-0.4em]
 \end{column}
 \begin{column}{0.32\textwidth}
 \textbf{Test accuracy} \smallnote{$\sim$20.05\,M jets}
@@ -673,18 +633,8 @@ $\Delta$ & $-0.003$ & $+0.065$ & $-0.006$\\
 \end{tabular}
 \smallskip
 \begin{block}{What we see}
-\scriptsize An \textbf{early gain in every class}, \textbf{gone by 1\,M}. Even
-Wqq --- the \emph{fewest} splittings --- gains at $\sim$9$\sigma$ early:
-\textbf{not confined to complex or $b$-jets}. At convergence:
+\scriptsize An \textbf{early gain in every class}, \textbf{gone by 1\,M}.  At convergence:
 \textbf{null-or-worse}.
-\end{block}
-\begin{block}{What we do \emph{not} claim}
-\scriptsize
-\begin{itemize}\setlength{\itemsep}{0pt}
-  \item \textbf{No mechanism} --- $b$-specificity excluded.
-  \item \textbf{One seed per arm} --- a second seed's spread exceeded the effect.
-  \item Their Hbb reproduced at 100k, \textbf{not} at convergence.
-\end{itemize}
 \end{block}
 \end{column}
 \end{columns}
@@ -706,12 +656,11 @@ Wqq --- the \emph{fewest} splittings --- gains at $\sim$9$\sigma$ early:
   \item \textbf{Reproduces the experiment's own reconstructed jets} exactly, at
   $\sim$600 clusters per event.
   \medskip
-  \item \textbf{54--143$\times$ faster} than vectorised FastJet \textbf{in the jet
-  regime} (one large-$R$ jet per timed unit, batched), peaking in the
-  boosted-object range. Cost is independent of $R$ and of algorithm.
+  \item \textbf{54--143$\times$ faster} than vectorised FastJet
   \medskip
   \item Still a \textcolor{fjorange}{\textbf{prototype}}, with meaningful headroom
   left.
+  %Add a small bullet here saying the result of training (small 1 line statement with no numbers)
 \end{enumerate}
 \end{frame}
 
