@@ -57,9 +57,9 @@
 % input provenance tags (following the substructure deck's A/B/C convention)
 \newcommand{\inputtag}[2]{{\footnotesize\textbf{\textcolor{#1}{#2}}}}
 % in-body tags (dark on white)
-\newcommand{\toyAbody}{\inputtag{fjblue}{Input A --- toy fat jets}}
-\newcommand{\toyBbody}{\inputtag{fjblue}{Input B --- toy parton shower}}
-\newcommand{\realCbody}{\inputtag{fjgreen}{Input C --- ATLAS Open Data}}
+\newcommand{\toyAbody}{\inputtag{fjblue}{Input A : toy fat jets}}
+\newcommand{\toyBbody}{\inputtag{fjblue}{Input B : toy parton shower}}
+\newcommand{\realCbody}{\inputtag{fjgreen}{Input C : ATLAS Open Data}}
 % title-bar tags: white-on-red, so they must be light
 \newcommand{\toyA}{{\footnotesize\normalfont\textcolor{white}{[toy A]}}}
 \newcommand{\toyB}{{\footnotesize\normalfont\textcolor{white}{[toy B]}}}
@@ -137,7 +137,7 @@ GPU it finds — no separate CUDA build.
 \begin{frame}{What everything in this talk is run on}
 \begin{columns}[T]
 \begin{column}{0.49\textwidth}
-\textbf{Toys} --- where the answer is \emph{known analytically}, so landing off
+\textbf{Toys}: where the answer is \emph{known analytically}, so landing off
 the curve is unambiguously a bug.
 \smallskip
 
@@ -148,12 +148,11 @@ vs 1-prong truth.}
 
 \toyBbody\\
 {\small Primary, fixed-coupling leading-log shower, uniform in the Lund
-triangle --- so the LL predictions are exact.}
+triangle}
 \end{column}
 \begin{column}{0.49\textwidth}
 \realCbody\\
-{\small Real detector-level \textbf{calorimeter-cluster constituents} (massless),
-CC0, read straight over the public redirector.}
+{\small Real detector-level \textbf{calorimeter-cluster constituents} }
 \smallskip
 
 {\footnotesize
@@ -414,7 +413,7 @@ the jets ATLAS reconstructed and published.
 
 \begin{frame}{The benchmark in two regimes \hfill \realC}
 \begin{columns}[T]
-\begin{column}{0.53\textwidth}
+\begin{column}{0.40\textwidth}
 \textbf{Two ways the clusterer gets used}
 \smallskip
 
@@ -429,30 +428,14 @@ the jets ATLAS reconstructed and published.
 \textbf{Large $N$, modest batch} which is the classic reconstruction task.
 \end{block}
 \end{column}
-\begin{column}{0.47\textwidth}
-\textbf{Method} \smallnote{(identical in both)}
-\begin{enumerate}\setlength\itemsep{0pt}
-  \item extract constituents once, save;
-  \item cluster on GPU, time it;
-  \item cluster the \emph{same saved file} with FastJet;
-  \item \textbf{check they agree} else the timing is meaningless.
-\end{enumerate}
-\smallskip
-
-{\small Speedups are quoted against the \textbf{vectorised} FastJet
-interface which is the faster, fairer baseline.}
+\begin{column}{0.60\textwidth}
+\begin{center}
+\includegraphics[height=0.70\textheight]{fig/combined_regimes.png}
+\end{center}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Time per unit in both regimes \hfill \realC}
-\begin{center}
-\includegraphics[height=0.70\textheight]{fig/combined_regimes.png}
-\end{center}
-\vspace{-0.2em}
-\smallnote{\textbf{Colour} = regime, \textbf{style} = implementation. The unit is
-a \emph{jet} (blue) or an \emph{event} (orange) }
-\end{frame}
 
 \begin{frame}{How the speedup varies by jet regime \hfill \realC}
 \begin{center}
