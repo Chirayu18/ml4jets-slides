@@ -134,6 +134,52 @@ GPU it finds — no separate CUDA build.
 \end{itemize}
 \end{frame}
 
+\begin{frame}{What everything in this talk is run on}
+\begin{columns}[T]
+\begin{column}{0.49\textwidth}
+\textbf{Toys} --- where the answer is \emph{known analytically}, so landing off
+the curve is unambiguously a bug.
+\smallskip
+
+\toyAbody\\
+{\small QCD-like and W-like fat jets, $p_T\!\approx\!500$\,GeV. A known 2-prong
+vs 1-prong truth.}
+\smallskip
+
+\toyBbody\\
+{\small Primary, fixed-coupling leading-log shower, uniform in the Lund
+triangle --- so the LL predictions are exact.}
+\end{column}
+\begin{column}{0.49\textwidth}
+\realCbody\\
+{\small Real detector-level \textbf{calorimeter-cluster constituents} (massless),
+CC0, read straight over the public redirector.}
+\smallskip
+
+{\footnotesize
+\begin{tabular}{@{}llrr@{}}
+\toprule
+& sample & units & $\langle N\rangle$\\
+\midrule
+\textcolor{regjet}{jet} & boosted top & 30\,000 & 59.2\\
+\textcolor{regjet}{jet} & QCD ($q/g$) & 30\,000 & 52.4\\
+\textcolor{regevt}{event} & $t\bar t$ reco & 3\,000 & 591.6\\
+\bottomrule
+\end{tabular}}
+\smallskip
+
+\smallnote{Top Tagging Open Data \texttt{10.7483/OPENDATA.ATLAS.FG5F.96GA};
+jet-reconstruction set \texttt{10.7483/OPENDATA.ATLAS.L806.5CKU}.}
+\end{column}
+\end{columns}
+\vspace{0.4em}
+\begin{block}{}
+\small Every results slide carries one of these tags \textbf{in its title bar},
+so it is always clear whether a plot is \textbf{generated} or \textbf{measured}.
+\smallnote{Generation details in backup.}
+\end{block}
+\end{frame}
+
 \begin{frame}{How sequential recombination works \hfill \toyA}
 \begin{center}
 \includegraphics[width=0.95\linewidth]{fig/clustering_steps.png}
@@ -315,6 +361,7 @@ QCD fills the soft-collinear region smoothly; the W-like sample adds a
 
 \begin{frame}{Jet by jet, against ATLAS's own stored values \hfill \realC}
 \begin{center}
+\vspace{0.35em}
 \includegraphics[width=0.92\linewidth]{fig/atlas_jetbyjet.png}
 \end{center}
 \vspace{-0.4em}
@@ -383,23 +430,6 @@ the jets ATLAS reconstructed and published.
 \end{block}
 \end{column}
 \begin{column}{0.47\textwidth}
-\textbf{Data} : ATLAS Open Data
-\smallskip
-
-{\footnotesize
-\begin{tabular}{@{}llrr@{}}
-\toprule
-& sample & units & $\langle N\rangle$\\
-\midrule
-\textcolor{regjet}{jet} & boosted top & 30\,000 & 59.2\\
-\textcolor{regjet}{jet} & QCD ($q/g$) & 30\,000 & 52.4\\
-\textcolor{regevt}{event} & $t\bar t$ reco & 3\,000 & 591.6\\
-\bottomrule
-\end{tabular}}
-\smallskip
-
-\medskip
-
 \textbf{Method} \smallnote{(identical in both)}
 \begin{enumerate}\setlength\itemsep{0pt}
   \item extract constituents once, save;
@@ -1098,15 +1128,26 @@ redirector --- no grid certificate required.
 \medskip
 
 \begin{center}
-\begin{tabular}{@{}ll@{}}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
 \toprule
-dataset & used for\\
+dataset & used for & DOI\\
 \midrule
-ATLAS Top Tagging Open Data & timing + FastJet agreement\\
-2020 ATLAS Jet Reconstruction & closure vs the experiment's own jets\\
+ATLAS Top Tagging Open Data & timing + FastJet agreement &
+\texttt{10.7483/OPENDATA.ATLAS.FG5F.96GA}\\
+\smallnote{(version with systematics)} & &
+\texttt{10.7483/OPENDATA.ATLAS.SOAY.LABE}\\
+2020 ATLAS Jet Reconstruction & closure vs the experiment's own jets &
+\texttt{10.7483/OPENDATA.ATLAS.L806.5CKU}\\
 \bottomrule
 \end{tabular}
 \end{center}
+\smallskip
+
+\smallnote{All three resolve at \texttt{opendata.cern.ch}; served over
+\texttt{root://eospublic.cern.ch}. The toy generators are not a public dataset ---
+they are a few lines in the plot scripts, reproduced in full in the two backup
+slides that follow, with a fixed seed.}
 \medskip
 
 \smallnote{Constituents are calorimeter clusters, massless. Physics closures use
