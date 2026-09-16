@@ -39,15 +39,15 @@
 \definecolor{fjgreen}{HTML}{16A34A}
 
 % Madrid, recoloured to the flashjet red
-\setbeamercolor{structure}{fg=fjred}
-\setbeamercolor{palette primary}{bg=fjred,fg=white}
-\setbeamercolor{palette secondary}{bg=fjred!80,fg=white}
-\setbeamercolor{palette tertiary}{bg=fjred!60,fg=white}
-\setbeamercolor{title}{bg=fjred,fg=white}
-\setbeamercolor{block title}{bg=fjred!12,fg=fjred}
-\setbeamercolor{block body}{bg=fjred!5,fg=black}
+\setbeamercolor{structure}{fg=fjblue}
+\setbeamercolor{palette primary}{bg=fjblue,fg=white}
+\setbeamercolor{palette secondary}{bg=fjblue!80,fg=white}
+\setbeamercolor{palette tertiary}{bg=fjblue!60,fg=white}
+\setbeamercolor{title}{bg=fjblue,fg=white}
+\setbeamercolor{block title}{bg=fjblue!12,fg=fjred}
+\setbeamercolor{block body}{bg=fjblue!5,fg=black}
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{itemize item}{\color{fjred}\textbullet}
+\setbeamertemplate{itemize item}{\color{fjblue}\textbullet}
 \setbeamertemplate{itemize subitem}{\color{fjgray}--}
 \setbeamerfont{frametitle}{size=\large,series=\bfseries}
 
@@ -82,12 +82,9 @@
 \title[flashjet]{\textbf{flashjet}}
 \subtitle{GPU-native jet clustering with the full merge history}
 \author[C. Gupta]{%
-  \textbf{Chirayu Gupta}\inst{1}\textsuperscript{,}* \and
-  Sitian Qian\inst{2} \and
-  Alexandre De Moor\inst{1}}
-\institute[]{%
-  \inst{1}Vrije Universiteit Brussel (BE) \and
-  \inst{2}Peking University (CN)}
+  \textbf{Chirayu Gupta}\textsuperscript{,}* \and
+  Sitian Qian \and
+  Alexandre De Moor}
 \date{ML4Jets 2026 \quad$\cdot$\quad Vienna \quad$\cdot$\quad September 2026}
 
 \begin{document}
@@ -105,10 +102,10 @@
 \section{Jet clustering, and flashjet}
 
 
-\begin{frame}{flashjet --- a GPU jet clusterer}
+\begin{frame}{flashjet : a GPU jet clusterer}
 \textbf{What it does}
 \begin{itemize}\setlength\itemsep{0.1em}
-  \item generalised-$k_t$ --- \akt, $k_t$, C/A
+  \item generalised-$k_t$ : \akt, $k_t$, C/A
   \item \textbf{many jets or events per launch}
   \item returns jets, the \textbf{full merge history}, and substructure
         \textbf{as tensors}
@@ -126,14 +123,13 @@ GPU it finds — no separate CUDA build.
         always some particle's \textbf{geometric} nearest neighbour
   \item so each particle tracks only \textbf{its own} NN, and one merge
         invalidates $O(1)$ of them
-  \item[$\Rightarrow$] \textbf{$O(N^2)$, not $O(N^3)$} --- the serial chain
-        stays, but each step is cheap and parallel
+  \item[$\Rightarrow$] \textbf{$O(N^2)$, not $O(N^3)$} making each step cheap and parallel
 \end{itemize}
 \vspace{-0.1em}
 
 \textbf{In the ML ecosystem}
 \begin{itemize}\setlength\itemsep{0.1em}
-  \item a \textbf{PyTorch} call --- tensors in, tensors out
+  \item Just a \textbf{PyTorch} call 
   \item no host\,$\leftrightarrow$\,device copy in a training loop
 \end{itemize}
 \end{frame}
@@ -178,11 +174,11 @@ GPU it finds — no separate CUDA build.
 $p$ & algorithm & merges first & tree ordered by & used for & \textbf{panel above}\\
 \midrule
 $-1$ & \akt & the \textbf{hardest} pairs & --- & \textbf{finding jets} &
-      \textbf{right} --- circular, rigid\\
+      circular, rigid\\
 $0$ & Cambridge--Aachen & the \textbf{closest} pair & \textbf{angle} &
-      grooming, Lund plane & \textbf{middle} --- ragged edges\\
+      grooming, Lund plane & ragged edges\\
 $+1$ & $k_t$ & the \textbf{softest} pair & \textbf{relative $p_T$} &
-      exclusive subjets & \textbf{left} --- most irregular\\
+      exclusive subjets &  most irregular\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -191,7 +187,7 @@ $+1$ & $k_t$ & the \textbf{softest} pair & \textbf{relative $p_T$} &
 
 \begin{frame}{It returns the tree, not just the jets \hfill \realC}
 \vspace{-0.2em}
-{\footnotesize Clustering a batch returns \textbf{two} things --- the jets
+{\footnotesize Clustering a batch returns \textbf{two} things : the jets
 (\texttt{jet\_idx} $(B,N)$, \texttt{n\_jets} $(B,)$), and the
 \textcolor{fjred}{\textbf{merge history}} below: \texttt{hist\_p1},
 \texttt{hist\_p2} (which pair merged), \texttt{hist\_child} (what they merged
@@ -203,9 +199,8 @@ into) and \texttt{hist\_d} (the distance), each $(B,N)$.}
 \end{center}
 \vspace{-0.5em}
 \smallnote{One real ATLAS jet with 8 constituents, C/A. Read column~0: particles
-\texttt{0} and \texttt{5} merge into \texttt{8} --- the node at the bottom right.
-Seven columns, seven merges, and the tree is complete. \textbf{Everything
-downstream --- grooming, subjets, Lund coordinates --- is a read of these rows},
+\texttt{0} and \texttt{5} merge into \texttt{8} Seven columns, seven merges, and the tree is complete. \textbf{Everything
+downstream is a read of these rows},
 never a second clustering.}
 \end{frame}
 
@@ -231,7 +226,7 @@ never a second clustering.}
 \end{itemize}
 \end{column}
 \begin{column}{0.46\textwidth}
-\textbf{Substructure} --- reads of the history
+\textbf{Substructure} reads of the history
 \begin{itemize}\setlength\itemsep{0.15em}
   \item \textbf{F1} exclusive $k_t$ subjets
   \item \textbf{F2} soft drop / mMDT / mass-drop
@@ -246,11 +241,11 @@ identical, negligible cost.}
 \end{frame}}
 
 % ------------------------------------------------------------
-\begin{frame}{F1 --- exclusive subjets from the $k_t$ history \hfill \toyA}
+\begin{frame}{ Exclusive subjets from the $k_t$ history \hfill \toyA}
 \begin{columns}[T]
 \begin{column}{0.3\textwidth}
 \textbf{What it does.} Undo the last merges of the sequence to expose exactly
-$n$ subjets --- or stop at a $d_{cut}$.
+$n$ subjets or stop at a $d_{cut}$.
 \smallskip
 
 \textbf{How.} The history is already a binary tree. Walk back up it $n-1$ steps;
@@ -258,7 +253,7 @@ no reclustering.
 \smallskip
 
 \textbf{Why $k_t$.} $k_t$ merges the softest pair first, so the \emph{last}
-merges are the hard prongs --- exactly what a 2-prong decay leaves behind.
+merges are the hard prongs which is exactly what a 2-prong decay leaves behind.
 \smallskip
 
 The splitting scales come straight from \texttt{hist\_d}:
@@ -268,7 +263,7 @@ The splitting scales come straight from \texttt{hist\_d}:
 \includegraphics[width=\linewidth]{fig/kt_observables.png}\\
 \smallnote{Toy W-like (2-prong) vs QCD-like fat jets.
 \textbf{Left:} the $k_t$ splitting scale $\sqrt{d_{12}}$ separates cleanly.
-\textbf{Right:} the momentum balance $z$ of the two exclusive subjets ---
+\textbf{Right:} the momentum balance $z$ of the two exclusive subjets: 
 the W sits near $z \sim 0.4$, QCD spreads to small~$z$.}
 
 \end{column}
@@ -276,7 +271,7 @@ the W sits near $z \sim 0.4$, QCD spreads to small~$z$.}
 \end{frame}
 
 % ------------------------------------------------------------
-\begin{frame}{F2 --- soft drop / mMDT grooming \hfill \toyA}
+\begin{frame}{ Soft drop / mMDT grooming \hfill \toyA}
 \begin{center}
 \includegraphics[width=\linewidth]{fig/softdrop_walk.png}
 \end{center}
@@ -286,7 +281,7 @@ the W sits near $z \sim 0.4$, QCD spreads to small~$z$.}
 prong until that condition is met. $\beta=0$ recovers mMDT.}
 \end{column}
 \begin{column}{0.5\textwidth}
-\smallnote{The walk is $O(\log_2 n)$ on the stored tree --- it never touches the
+\smallnote{The walk is $O(\log_2 n)$ on the stored tree and it never touches the
 constituents again, so grooming is essentially free once clustered.}
 \end{column}
 \end{columns}
@@ -301,7 +296,7 @@ constituents again, so grooming is essentially free once clustered.}
 \end{center}
 \end{frame}
 
-\begin{frame}{F3 --- primary Lund coordinates \hfill \toyA}
+\begin{frame}{Primary Lund coordinates \hfill \toyA}
 \begin{center}
 \includegraphics[width=0.80\linewidth]{fig/lund_plane.png}
 \end{center}
@@ -327,7 +322,7 @@ QCD fills the soft-collinear region smoothly; the W-like sample adds a
 \begin{column}{0.5\textwidth}
 \smallnote{\textbf{Left.} Reclustering the stored constituents recovers the
 stored jet with a \textbf{0.013 spread}. The 0.87 offset is the stored jet's
-\textbf{calibration}, applied after clustering --- it is present before we touch
+\textbf{calibration}, applied after clustering and it is present before we touch
 anything.}
 \end{column}
 \begin{column}{0.5\textwidth}
@@ -338,10 +333,10 @@ value \textbf{ATLAS computed with FastJet} and stored: median \textbf{1.0000},
 \end{columns}
 \end{frame}
 
-\begin{frame}{It gives the same jets --- everywhere we looked \hfill \realC}
+\begin{frame}{It gives the same jets everywhere we looked \hfill \realC}
 \begin{columns}[T]
 \begin{column}{0.45\textwidth}
-\begin{block}{vs FastJet --- a 150-point grid}
+\begin{block}{vs FastJet }
 \small 3 algorithms $\times$ 5 radii $\times$ 5 multiplicity bins $\times$ 2
 samples, 20\,000 jets each.
 \smallskip
@@ -349,7 +344,7 @@ samples, 20\,000 jets each.
 \textbf{100.000\,\%} jet-count agreement at \textbf{every} point.
 \end{block}
 {\small Leading-jet $p_T$ within $10^{-4}$ at \textbf{148/150}; median
-difference $\sim7\times10^{-8}$ --- float32 precision.}
+difference $\sim7\times10^{-8}$ attributed to float32 precision.}
 \end{column}
 \begin{column}{0.45\textwidth}
 \begin{block}{vs ATLAS's own reconstructed jets}
@@ -370,27 +365,25 @@ the jets ATLAS reconstructed and published.
 % ============================================================
 \section{Speed}
 
-\begin{frame}{The benchmark --- two regimes \hfill \realC}
+\begin{frame}{The benchmark in two regimes \hfill \realC}
 \begin{columns}[T]
 \begin{column}{0.53\textwidth}
 \textbf{Two ways the clusterer gets used}
 \smallskip
 
-\begin{block}{\textcolor{regjet}{Jet regime} --- one \emph{jet} per unit}
+\begin{block}{\textcolor{regjet}{Jet regime} : one \emph{jet} per unit}
 \small Recluster a single jet's constituents to read substructure off the tree.
-\textbf{Small $N$, huge batch} --- thousands of independent jets per launch.
+\textbf{Small $N$, huge batch}, thousands of independent jets per launch.
 \smallnote{This is the ML use case: features inside a training loop.}
 \end{block}
 
-\begin{block}{\textcolor{regevt}{Event regime} --- one \emph{event} per unit}
+\begin{block}{\textcolor{regevt}{Event regime} : one \emph{event} per unit}
 \small Cluster a whole event's calorimeter clusters to \emph{find} the jets.
-\textbf{Large $N$, modest batch} --- the classic reconstruction task.
+\textbf{Large $N$, modest batch} which is the classic reconstruction task.
 \end{block}
-\smallnote{Same kernel, same API --- only the shape of the input tensor differs.
-The regimes are timed separately because a jet and an event are different units.}
 \end{column}
 \begin{column}{0.47\textwidth}
-\textbf{Data} --- ATLAS Open Data, freely presentable
+\textbf{Data} : ATLAS Open Data
 \smallskip
 
 {\footnotesize
@@ -412,28 +405,26 @@ The regimes are timed separately because a jet and an event are different units.
   \item extract constituents once, save;
   \item cluster on GPU, time it;
   \item cluster the \emph{same saved file} with FastJet;
-  \item \textbf{check they agree} --- else the timing is meaningless.
+  \item \textbf{check they agree} else the timing is meaningless.
 \end{enumerate}
 \smallskip
 
 {\small Speedups are quoted against the \textbf{vectorised} FastJet
-interface --- the faster, fairer baseline.}
+interface which is the faster, fairer baseline.}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Time per unit --- both regimes \hfill \realC}
+\begin{frame}{Time per unit in both regimes \hfill \realC}
 \begin{center}
 \includegraphics[height=0.70\textheight]{fig/combined_regimes.png}
 \end{center}
 \vspace{-0.2em}
 \smallnote{\textbf{Colour} = regime, \textbf{style} = implementation. The unit is
-a \emph{jet} (blue) or an \emph{event} (orange) --- only the \textbf{ratio panel}
-compares across them. \textbf{0.17--1.1\,$\mu$s/jet}, \textbf{4.9--40\,$\mu$s/event};
-speedup peaks \textbf{129$\times$} / \textbf{65$\times$}.}
+a \emph{jet} (blue) or an \emph{event} (orange) }
 \end{frame}
 
-\begin{frame}{How the speedup varies --- jet regime \hfill \realC}
+\begin{frame}{How the speedup varies by jet regime \hfill \realC}
 \begin{center}
 \includegraphics[width=\linewidth,trim=0 8 0 8,clip]{fig/atlas_speedup_algs.png}
 \end{center}
@@ -472,14 +463,12 @@ out.exclusive_jets(n_jets=3)                  # F1       exclusive kt subjets
 out.groomed_jets(p4, R, z_cut=0.1, beta=0.0)  # F2       soft drop / mMDT
 out.lund_coordinates(p4, R)                   # F3       primary Lund plane
 \end{Verbatim}
-\smallnote{The same call runs unchanged on CPU and GPU --- the backend is chosen
-from the problem size, not by the caller.}
 \end{frame}
 
 % ============================================================
 \section{Downstream: the clustering tree as tagger input}
 
-\begin{frame}{Does the tree help a tagger? --- setup}
+\begin{frame}{Does the tree help a tagger?}
 \begin{columns}[T]
 \begin{column}{0.54\textwidth}
 \textbf{The question.} Gouskos \& Maier [PLuM, 2605.26821] report that explicit
@@ -487,7 +476,7 @@ Lund-plane splittings help a transformer tagger. We test that on a
 \textbf{full 10-class} training.
 \medskip
 
-\textbf{Model.} Particle Transformer [2202.03772] --- 8 encoder $+$ 2
+\textbf{Model.} Particle Transformer [2202.03772] : 8 encoder $+$ 2
 class-attention blocks, 8 heads, embed 128; \textbf{2.144\,M} parameters.
 \medskip
 
@@ -512,12 +501,10 @@ parameters & 2{,}193{,}930 & 2.19\,M\\
 \end{tabular}
 \smallskip
 
-\small Like-for-like --- so a difference between arms is the \emph{feature},
-not a broken baseline.
 \end{block}
 \smallskip
 
-\smallnote{\textbf{Shown here: PLuM} --- 48 $k_t$-ordered Lund splittings
+\smallnote{\textbf{Shown here: PLuM} : 48 $k_t$-ordered Lund splittings
 $[\ln k_t, \ln 1/\Delta R, \ln z]$, concatenated as extra tokens (176 vs 128).
 Two other encodings were tried --- \textbf{subjet} ($n$-body mass, $p_T$
 fraction, $n_{\rm const}$) and \textbf{CA5} (per-particle C/A branch points);
@@ -570,7 +557,7 @@ low-efficiency end is noisy because rejection there is $\sim10^{5}$.}
 \includegraphics[width=\linewidth,trim=0 18 0 22,clip]{fig/part_rocratio_Hbb.png}
 \end{column}
 \begin{column}{0.44\textwidth}
-\textbf{$H\rightarrow b\bar b$ vs QCD} --- where PLuM report their largest gain.
+\textbf{$H\rightarrow b\bar b$ vs QCD} where PLuM report their largest gain.
 \smallskip
 
 \begin{block}{}
@@ -580,7 +567,7 @@ ratio is \textbf{at or below 1}.
 \medskip
 
 \smallnote{Their result is obtained in \emph{binary} mode ; ours is a 10-class training. The
-early-training agreement is real --- the disagreement is about what survives to
+early-training agreement is real , the disagreement is about what survives to
 convergence.}\\
 \smallskip
 \textbf{Top right = BETTER }
@@ -588,7 +575,7 @@ convergence.}\\
 \end{columns}
 \end{frame}
 
-\begin{frame}{All seven signal classes --- the same story}
+\begin{frame}{All seven signal classes }
 \begin{center}
 \includegraphics[width=0.94\linewidth]{fig/part_ratio_allclasses.png}
 \end{center}
@@ -620,7 +607,7 @@ convergence: \textbf{null-or-worse}.}
 \begin{frame}{Summary}
 \begin{enumerate}
   \item \textbf{Clusters on the GPU and keeps the full merge history}, so
-  substructure --- exclusive subjets, soft drop, Lund coordinates --- comes free
+  substructure like exclusive subjets, soft drop, Lund coordinates comes free
   as array reads. Built for \textbf{reclustering inside a training loop}, on
   tensors that never leave the GPU.
   \medskip
@@ -645,7 +632,7 @@ convergence: \textbf{null-or-worse}.}
 \begin{frame}[plain,noframenumbering]
 \vfill
 \begin{center}
-{\Large\color{fjred}\textbf{Thank you}}
+{\Large\color{fjblue}\textbf{Thank you}}
 \medskip
 
 {\large Questions?}
