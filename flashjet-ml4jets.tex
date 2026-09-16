@@ -82,15 +82,21 @@
 \title[flashjet]{\textbf{flashjet}}
 \subtitle{GPU-native jet clustering with the full merge history}
 \author[C. Gupta]{%
-  \textbf{Chirayu Gupta}\textsuperscript{,}* \and
-  Sitian Qian \and
-  Alexandre De Moor}
+  \textbf{Chirayu Gupta}\inst{1}\textsuperscript{,}* \and
+  Sitian Qian\inst{2} \and
+  Alexandre De Moor\inst{1}}
+\institute[]{%
+  \inst{1}Vrije Universiteit Brussel \and
+  \inst{2}Northwestern University}
 \date{ML4Jets 2026 \quad$\cdot$\quad Vienna \quad$\cdot$\quad September 2026}
 
 \begin{document}
 
 \begin{frame}[plain,noframenumbering]
   \titlepage
+  \begin{center}
+  \smallnote{Public at \texttt{github.com/jet-universe/FlashJet}}
+  \end{center}
 \end{frame}
 
 % ============================================================
@@ -430,8 +436,13 @@ the jets ATLAS reconstructed and published.
 \end{column}
 \begin{column}{0.60\textwidth}
 \begin{center}
-\includegraphics[height=0.70\textheight]{fig/combined_regimes.png}
+\includegraphics[height=0.62\textheight]{fig/combined_regimes.png}
 \end{center}
+\vspace{-0.5em}
+\smallnote{\textbf{vectorised} = one FastJet call over the whole batch
+(its awkward-array interface); \textbf{one at a time} = a separate
+\texttt{ClusterSequence} per jet. Both run FastJet on a \textbf{single CPU
+thread}.}
 \end{column}
 \end{columns}
 \end{frame}
